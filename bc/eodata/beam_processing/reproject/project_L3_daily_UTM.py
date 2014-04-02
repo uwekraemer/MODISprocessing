@@ -34,8 +34,8 @@ _day   = back_date[6:]
 _doy   = getDOY(_year, _month, _day)
 print("Processing date " + back_date + " (DOY = " + str(_doy)+ ").")
 
-modisL3_TSMPath  = ensureTrailingSlash(ensureTrailingSlash(ensureTrailingSlash(modisL3_TSMBasePath  + _year) + _month) + _day)
-modisL3_UTMPath  = ensureTrailingSlash(ensureTrailingSlash(ensureTrailingSlash(modisL3_TSM_UTMPath  + _year) + _month) + _day)
+modisL3_TSMPath  = ensureTrailingSlash(ensureTrailingSlash(modisL3_TSMBasePath  + _year) + _month)
+modisL3_UTMPath  = ensureTrailingSlash(ensureTrailingSlash(modisL3_TSM_UTMPath  + _year) + _month)
 modisL3_UTM_QLPath = ensureTrailingSlash(modisL3_TSM_UTM_QLPath  + _year)
 
 for _path in [modisL3_UTMPath, modisL3_UTM_QLPath]:
@@ -55,7 +55,7 @@ else:
 # Liste bereinigen:
 for a in range(listSize):
     for item in srcList:
-        if not item.startswith('cb_ns_' + back_date) or not item.endswith('.dim'):
+        if not item.startswith(_site + '_' + back_date) or not item.endswith('.dim'):
             srcList.remove(item)
 
 listSize = exit_on_empty_list(srcList)
@@ -71,7 +71,7 @@ for item in srcList:
     pconv_call = pconvProcessor + ' -f png -b 1 -c ' + cobios_chl_palette + ' -o ' + modisL3_UTM_QLPath + ' ' + outputProductPath
     system(pconv_call)
     oldPngFileName = modisL3_UTM_QLPath + basename(outputProductPath).replace('.dim', '.png')
-    newPngFileName = modisL3_UTM_QLPath + basename(outputProductPath).replace('cb_ns_', 'cb_ns_chl_').replace('.dim', '.png')
+    newPngFileName = modisL3_UTM_QLPath + basename(outputProductPath).replace('cb_NorthSea_', 'cb_NorthSea_chl_').replace('.dim', '.png')
     imCompositeCommand = imageMagickComposite + ' -gravity center ' + landMaskFile + ' ' + oldPngFileName + ' ' + newPngFileName
     system(imCompositeCommand)
     remove(oldPngFileName)      # not needed anymore

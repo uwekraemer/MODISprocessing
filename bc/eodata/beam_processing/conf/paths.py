@@ -1,6 +1,6 @@
 __author__ = 'uwe'
 
-toolsDir = '/Users/uwe/Documents/Development/Python/EOservices/MODISprocessingP3/bc/eodata/beam_processing/tools/'
+toolsDir = '/Users/uwe/Documents/Development/Python/EOservices/MODISprocessing/bc/eodata/beam_processing/tools/'
 beam410HomeDir = '/Applications/beam-4.10/'
 beam500HomeDir = '/Applications/beam-5.0/'
 

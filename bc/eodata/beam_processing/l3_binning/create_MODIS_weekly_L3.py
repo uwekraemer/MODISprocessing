@@ -2,11 +2,12 @@
 __author__ = 'uwe'
 
 from os.path import exists
-from os import makedirs, listdir, system
+from os import makedirs, system
 from sys import argv
 from datetime import date
+from time import time
 from glob import glob
-from nasa.modis.seadas_processing.shared.utilities import getDOY, getBackDate, ensureTrailingSlash, exit_on_empty_list
+from nasa.modis.seadas_processing.shared.utilities import getBackDate, ensureTrailingSlash, exit_on_empty_list
 from nasa.modis.seadas_processing.conf.paths import modisL2_TSMBasePath
 from bc.eodata.beam_processing.conf.paths import beam500HomeDir as beamHomeDir, modisWeeklyBasePath
 
@@ -46,11 +47,11 @@ if not parameters in ['wac', 'sst']:
     printUsage()
     exit(1)
 
-if region=='NorthSea':
-    regiondestID= '_nos_'
+if region == 'NorthSea':
+    regionDestID = '_nos_'
     from bc.eodata.beam_processing.conf.params import nos_polygon as polygon
-elif region=='BalticSea':
-    regiondestID= '_bas_'
+elif region == 'BalticSea':
+    regionDestID = '_bas_'
     from bc.eodata.beam_processing.conf.params import bas_polygon as polygon
 
 if parameters=='wac':
@@ -58,6 +59,7 @@ if parameters=='wac':
 elif parameters=='sst':
     from bc.eodata.beam_processing.conf.paths import sst_graph_file as graph_file
 
+_t0 = time()
 
 beamBinDir  = beamHomeDir + 'bin/'
 gptProcessor = beamBinDir + 'gpt.command'
@@ -84,7 +86,7 @@ modisWeeklyPath  = ensureTrailingSlash(ensureTrailingSlash(modisWeeklyBasePath +
 dateRangeString = str(day_list[6].year) + str(day_list[6].month).zfill(2) + str(day_list[6].day).zfill(2) + '_' + \
                   str(day_list[0].year) + str(day_list[0].month).zfill(2) + str(day_list[0].day).zfill(2)
 
-outputProductPath = modisWeeklyPath + dateRangeString + regiondestID + parameters + '_bc_mod_1200.dim'
+outputProductPath = modisWeeklyPath + dateRangeString + regionDestID + parameters + '_bc_mod_1200.dim'
 
 for _path in [modisWeeklyPath]:
     if not exists(_path):
@@ -94,5 +96,8 @@ for _path in [modisWeeklyPath]:
 processing_call = gptProcessor + ' -e ' + graph_file + ' -PinputProducts=' + srcList + ' -PregionPolygon=' + polygon + ' -PoutputProduct=' + outputProductPath
 print("Executing call: ", processing_call, "...")
 system(processing_call)
+
+_t1 = time()
+print('Done after %5.2f seconds.' % (_t1 - _t0))
 
 #EOF
