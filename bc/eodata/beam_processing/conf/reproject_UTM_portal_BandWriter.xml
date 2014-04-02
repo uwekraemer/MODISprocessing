@@ -1,0 +1,58 @@
+<graph id="cobios_UTM_projection_dim_writer">
+  <version>1.0</version>
+  <node id="cobios_UTM_projection">
+    <operator>Reproject</operator>
+    <sources>
+      <source>${source}</source>
+    </sources>
+    <parameters>
+        <crs>PROJCS["WGS 84 / UTM zone 31N", 
+      GEOGCS["WGS 84", 
+        DATUM["World Geodetic System 1984", 
+          SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], 
+          AUTHORITY["EPSG","6326"]], 
+        PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], 
+        UNIT["degree", 0.017453292519943295], 
+        AXIS["Geodetic longitude", EAST], 
+        AXIS["Geodetic latitude", NORTH], 
+        AUTHORITY["EPSG","4326"]], 
+      PROJECTION["Transverse_Mercator", AUTHORITY["EPSG","9807"]], 
+      PARAMETER["central_meridian", 3.0], 
+      PARAMETER["latitude_of_origin", 0.0], 
+      PARAMETER["scale_factor", 0.9996], 
+      PARAMETER["false_easting", 500000.0], 
+      PARAMETER["false_northing", 0.0], 
+      UNIT["m", 1.0], 
+      AXIS["Easting", EAST], 
+      AXIS["Northing", NORTH], 
+      AUTHORITY["EPSG","32631"]]</crs>
+	   <resampling>Bilinear</resampling>
+		<referencePixelX>0.5</referencePixelX>
+		<referencePixelY>0.5</referencePixelY>
+		<easting>-100000</easting>
+		<northing>6690000</northing>
+		<orientation>0.0</orientation>
+		<pixelSizeX>2000.0</pixelSizeX>
+		<pixelSizeY>2000.0</pixelSizeY>
+		<width>547</width>
+		<height>675</height>
+		<orthorectify>false</orthorectify>
+		<noDataValue>NaN</noDataValue>
+		<includeTiePointGrids>true</includeTiePointGrids>
+		<addDeltaBands>true</addDeltaBands>
+	</parameters> 
+	</node>
+    <node id="WNC">
+    <operator>Write</operator>
+    <sources>
+      <source>cobios_UTM_projection</source>
+    </sources>
+    <parameters>
+      <file>${file}</file>
+      <formatName>BEAM-DIMAP</formatName>
+      <deleteOutputOnFailure>false</deleteOutputOnFailure>
+      <writeEntireTileRows>true</writeEntireTileRows>
+      <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
+    </parameters>
+  </node>
+</graph>

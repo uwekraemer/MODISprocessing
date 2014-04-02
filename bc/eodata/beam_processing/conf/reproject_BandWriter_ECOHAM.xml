@@ -1,0 +1,49 @@
+<graph id="cobios_grid_projection_nc_writer">
+  <version>1.0</version>
+  <node id="cobios_grid_projection">
+    <operator>Reproject</operator>
+    <sources>
+      <source>${source}</source>
+    </sources>
+    <parameters>
+        <wktFile/>
+        <crs>GEOGCS["WGS84(DD)", 
+          DATUM["WGS84", 
+            SPHEROID["WGS84", 6378137.0, 298.257223563]], 
+          PRIMEM["Greenwich", 0.0], 
+          UNIT["degree", 0.017453292519943295], 
+          AXIS["Geodetic longitude", EAST], 
+          AXIS["Geodetic latitude", NORTH]]</crs>
+        <resampling>Bilinear</resampling>
+        <referencePixelX>0.5</referencePixelX>
+        <referencePixelY>0.5</referencePixelY>
+        <easting>-4.0625</easting>
+        <northing>60.3458</northing>
+        <orientation>0.0</orientation>
+        <pixelSizeX>0.041666666666666664</pixelSizeX>
+        <pixelSizeY>0.025</pixelSizeY>
+        <width>414</width>
+        <height>380</height>
+        <tileSizeX/>
+        <tileSizeY/>
+        <orthorectify>false</orthorectify>
+        <elevationModelName/>
+        <noDataValue>NaN</noDataValue>
+        <includeTiePointGrids>true</includeTiePointGrids>
+        <addDeltaBands>false</addDeltaBands>
+    </parameters>
+  </node>
+    <node id="WNC">
+    <operator>Write</operator>
+    <sources>
+      <source>cobios_grid_projection</source>
+    </sources>
+    <parameters>
+      <file>${file}</file>
+      <formatName>BEAM-DIMAP</formatName>
+      <deleteOutputOnFailure>false</deleteOutputOnFailure>
+      <writeEntireTileRows>true</writeEntireTileRows>
+      <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
+    </parameters>
+  </node>
+</graph>

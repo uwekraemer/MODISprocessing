@@ -1,0 +1,42 @@
+<graph id="binningGraph">
+    <version>1.0</version>
+    <node id="binningNode">
+        <operator>Binning</operator>
+        <parameters>
+            <sourceProductPaths>${inputProducts}</sourceProductPaths>
+            <sourceProductFormat>BEAM-DIMAP</sourceProductFormat>
+            <region>${regionPolygon}</region>
+            <outputBinnedData>false</outputBinnedData>
+            <outputTargetProduct>true</outputTargetProduct>
+            <binningConfig>
+                <planetaryGrid>org.esa.beam.binning.support.SEAGrid</planetaryGrid>
+                <compositingType>BINNING</compositingType>
+                <numRows>16692</numRows>
+                <superSampling>3</superSampling>
+                <maskExpr>!l2_flags.PRODWARN</maskExpr>
+                <variables>
+                    <variable>
+                        <name>_sst</name>
+                        <expr>(fneq(sst,-163.83499633800238) AND qual_sst == 0) ? sst : NaN</expr>
+                    </variable>
+                </variables>
+                <aggregators>
+                    <aggregator>
+                        <type>AVG</type>
+                        <varName>_sst</varName>
+                        <outputCounts>true</outputCounts>
+                    </aggregator>
+                </aggregators>
+				<postProcessor>
+                    <type>Selection</type>
+					<varNames>sst_mean=_sst_mean,sst_sigma=_sst_sigma,sst_counts=_sst_counts</varNames>
+				</postProcessor>
+            </binningConfig>
+            <formatterConfig>
+                <outputType>Product</outputType>
+                <outputFile>${outputProduct}</outputFile>
+                <outputFormat>BEAM-DIMAP</outputFormat>
+            </formatterConfig>
+        </parameters>
+    </node>
+</graph>

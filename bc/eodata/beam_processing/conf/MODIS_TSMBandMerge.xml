@@ -1,0 +1,45 @@
+<graph id="TSMBandMerge">
+  <version>1.0</version>
+  <node id="BM">
+    <operator>BandMaths</operator>
+    <sources>
+      <sourceProducts>${sourceProduct}</sourceProducts>
+    </sources>
+    <parameters>
+      <targetBands>
+        <targetBand>
+          <name>tsm_667</name>
+          <expression>362.09 * PI * Rrs_667 /(1-PI*Rrs_667/0.1747)</expression>
+          <description>tsm_667</description>
+          <type>float32</type>
+          <unit>g/m^3</unit>
+          <noDataValue>-13.812178</noDataValue>
+        </targetBand>
+        <targetBand>
+          <name>tsm_678</name>
+          <expression>400.75 * PI * Rrs_678 /(1-PI*Rrs_678/0.1774)</expression>
+          <description>tsm_678</description>
+          <type>float32</type>
+          <unit>g/m^3</unit>
+          <noDataValue>-15.337862</noDataValue>
+        </targetBand>
+        <targetBand>
+          <name>KdPAR</name>
+          <expression>(Kd_412_lee + Kd_443_lee + Kd_469_lee + Kd_488_lee + Kd_531_lee + Kd_547_lee + Kd_555_lee + Kd_645_lee + Kd_667_lee + Kd_678_lee) / 10.0</expression>
+          <validExpression>(fneq(Kd_412_lee,-6.553399834447191) &amp;&amp; fneq(Kd_443_lee,-6.553399834447191) &amp;&amp; fneq(Kd_469_lee,-6.553399834447191) &amp;&amp; fneq(Kd_488_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_531_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_547_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_555_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_645_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_667_lee ,-6.553399834447191) &amp;&amp; fneq(Kd_678_lee ,-6.553399834447191))</validExpression>
+          <description>Mean attenuation coefficient over PAR</description>
+          <type>float32</type>
+          <unit>m^-1</unit>
+          <noDataValue>NaN</noDataValue>
+        </targetBand>
+      </targetBands>
+    </parameters>
+  </node>
+  <node id="Merge">
+    <operator>Merge</operator>
+    <sources>
+      <masterProduct>${sourceProduct}</masterProduct>
+      <sourceProducts>BM</sourceProducts>
+    </sources>
+  </node>
+</graph>

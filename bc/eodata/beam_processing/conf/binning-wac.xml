@@ -1,0 +1,60 @@
+<graph id="binningGraph">
+    <version>1.0</version>
+    <node id="binningNode">
+        <operator>Binning</operator>
+        <parameters>
+            <sourceProductPaths>${inputProducts}</sourceProductPaths>
+            <sourceProductFormat>BEAM-DIMAP</sourceProductFormat>
+            <region>${regionPolygon}</region>
+            <outputBinnedData>false</outputBinnedData>
+            <outputTargetProduct>true</outputTargetProduct>
+            <binningConfig>
+                <planetaryGrid>org.esa.beam.binning.support.SEAGrid</planetaryGrid>
+                <compositingType>BINNING</compositingType>
+                <numRows>16692</numRows>
+                <superSampling>3</superSampling>
+                <maskExpr>!l2_flags.PRODWARN</maskExpr>
+                <variables>
+                    <variable>
+                        <name>chl</name>
+                        <expr>fneq(chlor_a,-32767.0) AND NOT l2_flags.CHLFAIL AND NOT l2_flags.CHLWARN ? chlor_a : NaN</expr>
+                    </variable>
+                    <variable>
+                        <name>tsm</name>
+                        <expr>tsm_678 > 0.0 ? tsm_678 : NaN</expr>
+                    </variable>
+                    <variable>
+                        <name>Kd__490</name>
+                        <expr>fneq(Kd_490,-6.553399834447191) ? Kd_490 : NaN</expr>
+                    </variable>
+                </variables>
+                <aggregators>
+                    <aggregator>
+                        <type>AVG</type>
+                        <varName>chl</varName>
+                        <outputCounts>true</outputCounts>
+                    </aggregator>
+                    <aggregator>
+                        <type>AVG</type>
+                        <varName>tsm</varName>
+                        <outputCounts>true</outputCounts>
+                    </aggregator>
+                    <aggregator>
+                        <type>AVG</type>
+                        <varName>Kd__490</varName>
+                        <outputCounts>true</outputCounts>
+                    </aggregator>
+                </aggregators>
+				<postProcessor>
+                    <type>Selection</type>
+					<varNames>chl_mean=chl_mean,chl_sigma=chl_sigma,chl_counts=chl_counts,tsm_mean=tsm_mean,tsm_sigma=tsm_sigma,tsm_counts=tsm_counts,Kd_490_mean=Kd__490_mean,Kd_490_sigma=Kd__490_sigma,Kd_490_counts=Kd__490_counts</varNames>
+				</postProcessor>
+            </binningConfig>
+            <formatterConfig>
+                <outputType>Product</outputType>
+                <outputFile>${outputProduct}</outputFile>
+                <outputFormat>BEAM-DIMAP</outputFormat>
+            </formatterConfig>
+        </parameters>
+    </node>
+</graph>
