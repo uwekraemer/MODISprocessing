@@ -162,5 +162,6 @@ _t2 = time()
 
 print('Processing took %5.2f seconds.' % (_t1 - _t0))
 print('Image generation took %5.2f seconds.' % (_t2 - _t1))
+print('Just a git check...')
 
 #EOF
