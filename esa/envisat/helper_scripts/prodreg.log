@@ -1,0 +1,40 @@
+09.12.2008 14:01:07 com.bc.merci.productreg.ProductRegistrationRunner getDatbaseManager
+INFO: Connected to database: jdbc:mysql://192.168.101.66:3306/merci_waqs
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.jobs.childgen.ChildGenerationProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.jobs.frordering.FrOrderingProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.jobs.h4gen.H4DiagSitesProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory logRegistration
+INFO: registering module 'MERIS Metadata Handler' associated with: MER_RR__1P, MER_FR__1P, MER_RR__2P, MER_FR__2P
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory logRegistration
+INFO: registering module 'MERIS Statistics Generator' associated with: MER_RR__1P, MER_FR__1P, MER_RR__2P, MER_FR__2P
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory logRegistration
+INFO: registering module 'MERIS Image Config Handler' associated with: MER_RR__1P, MER_FR__1P, MER_RR__2P, MER_FR__2P
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory logRegistration
+INFO: registering module 'MERIS child product generator (*.N1)' associated with: MER_RR__1P, MER_RR__2P
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.product.modis.ModisMetadataHandlerProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.product.modis.ModisStatisticsGeneratorProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.product.modis.ModisImageConfigHandlerProxy
+09.12.2008 14:01:07 com.bc.util.product.ModuleFactory init
+SCHWERWIEGEND: failed to load class: com.bc.merci.product.modis.ModisChildGeneratorProxy
+09.12.2008 14:01:07 com.bc.merci.productreg.ProductRegistrationRunner registerProducts
+INFO: Registering product '/fs14/EOservices/InputPool/MERIS/RR/backlog/MER_RR__2PNMAP20070129_102835_000002202055_00094_25699_0001.N1 ...
+09.12.2008 14:01:07 com.bc.merci.productreg.ProductRegistrator loadProductGuarded
+INFO: Reading Product '/fs14/EOservices/InputPool/MERIS/RR/backlog/MER_RR__2PNMAP20070129_102835_000002202055_00094_25699_0001.N1 ...
+09.12.2008 14:01:09 com.bc.merci.productreg.ProductRegistrator loadProductGuarded
+INFO: ... success: Product read
+09.12.2008 14:01:09 com.bc.merci.productreg.util.ProductRegistratorUtil moveFile
+INFO: moving /fs14/EOservices/InputPool/MERIS/RR/backlog/MER_RR__2PNMAP20070129_102835_000002202055_00094_25699_0001.N1 to /fs14/EOservices/Repositories/MERIS/RR/WAQSrepository/2007
+09.12.2008 14:01:24 com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: Generating quicklook ...
+09.12.2008 14:01:26 com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: ... success: Quicklook generated at 2007/ql/MER_RR__2PNMAP20070129_102835_000002202055_00094_25699_0001.png
+09.12.2008 14:01:26 com.bc.merci.productreg.ProductRegistrator registerProduct
+WARNUNG: No thumbnail path available.
+09.12.2008 14:01:26 com.bc.merci.productreg.ProductRegistrationRunner registerProducts
+INFO: ... success: Product registered

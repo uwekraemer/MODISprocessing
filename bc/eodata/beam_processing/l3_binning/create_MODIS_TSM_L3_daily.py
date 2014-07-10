@@ -1,23 +1,17 @@
 #!/usr/bin/env python
 __author__ = 'uwe'
 
-from nasa.modis.seadas_processing.conf.params import l3_grid_cell_size, _site
-if _site == 'NorthSea':
-    from nasa.modis.seadas_processing.conf.params import west_lon_large_nsea_l3 as lon_min, east_lon_large_nsea_l3 as lon_max
-    from nasa.modis.seadas_processing.conf.params import south_lat_large_nsea_l3 as lat_min, north_lat_large_nsea_l3 as lat_max
-elif _site == 'BalticSea':
-    from nasa.modis.seadas_processing.conf.params import west_lon_large_bsea_l3 as lon_min, east_lon_large_bsea_l3 as lon_max
-    from nasa.modis.seadas_processing.conf.params import south_lat_large_bsea_l3 as lat_min, north_lat_large_bsea_l3 as lat_max
-
-from nasa.modis.seadas_processing.shared.utilities import getDOY, ensureTrailingSlash, exit_on_empty_list
-from nasa.modis.seadas_processing.conf.paths import modisL2_TSMBasePath, modisL3_TSMBasePath, beam_410BinDir as beamBinDir, l3binningDir
 from os import listdir, makedirs, remove, system
 from os.path import exists
-from sys import argv, exit
+from sys import argv
 from shutil import rmtree
 
-print(_site, lat_min, lat_max, lon_min, lon_max)
-# exit(1)
+from nasa.modis.seadas_processing.conf.params import west_lon_large_l3 as lon_min, east_lon_large_l3 as lon_max
+from nasa.modis.seadas_processing.conf.params import south_lat_large_l3 as lat_min, north_lat_large_l3 as lat_max
+from nasa.modis.seadas_processing.conf.params import l3_grid_cell_size, _site
+from utils.utilities import getDOY, ensureTrailingSlash, exit_on_empty_list
+from nasa.modis.seadas_processing.conf.paths import modisL2_TSMBasePath, modisL3_TSMBasePath, beam_410BinDir as beamBinDir, l3binningDir
+
 
 def printUsage():
     print("Usage: ", argv[0], "<date>")
@@ -42,11 +36,10 @@ _day   = back_date[6:]
 _doy   = getDOY(_year, _month, _day)
 DOY = str(_doy).zfill(3)
 
-
 print("Processing date " + back_date + " (DOY = " + DOY + ").")
 
 modisL2_TSMPath  = ensureTrailingSlash(ensureTrailingSlash(ensureTrailingSlash(modisL2_TSMBasePath  + _year) + _month) + _day)
-modisL3_TSMPath  = ensureTrailingSlash(ensureTrailingSlash(modisL3_TSMBasePath  + _year) + _month)
+modisL3_TSMPath  = ensureTrailingSlash(ensureTrailingSlash(ensureTrailingSlash(modisL3_TSMBasePath  + _year) + _month) + _day)
 
 print(modisL2_TSMPath, modisL3_TSMPath)
 
@@ -73,10 +66,9 @@ for a in range(listSize):
 listSize = exit_on_empty_list(srcList)
 srcList.sort()
 
-# outputProductPath = modisL3_TSMPath + 'cb_' + _site + '_' + back_date + '_eo_bc_lat_lon.dim'
-outputProductPath = modisL3_TSMPath + _site + '_' + back_date + '_eo_bc_lat_lon.dim'
+outputProductPath = modisL3_TSMPath + 'cb_' + _site + '_' + back_date + '_eo_bc_lat_lon.dim'
 
-l3binningScript = beamBinDir + 'binning.command'
+l3binningScript = beamBinDir + 'binning.sh'
 l3binningDatabase = l3binningDir + 'l3_large_' + str(_year) + DOY + '.bindb'
 if exists(l3binningDatabase):
     rmtree(l3binningDatabase)

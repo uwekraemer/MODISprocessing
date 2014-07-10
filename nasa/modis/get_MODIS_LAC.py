@@ -33,7 +33,6 @@ except TypeError:
     exit(1)
 
 
-
 def getDOY(backDay):
     d0 = date(_year-1, 12, 31)
     d1 = date.today() - timedelta(backDay)
@@ -61,7 +60,7 @@ def ensureTrailingSlash(path):
 
 MODIS_products = ['L1A_LAC']
 #MODIS_products = ['L1A_LAC', 'L2_LAC_OC', 'L2_LAC_SST']
-MODIS_localBaseDir = '/Volumes/fs14/EOservices/InputPool/MODIS' + ensureTrailingSlash(satellite_code)
+MODIS_localBaseDir = '/fs14/EOservices/InputPool/MODIS' + ensureTrailingSlash(satellite_code)
 baseURL = 'http://oceandata.sci.gsfc.nasa.gov/MODIS'+ ensureTrailingSlash(satellite_code)
 
 
@@ -75,7 +74,10 @@ for productType in MODIS_products:
         makedirs(L2_LAC_localInputDir)
     chdir(L2_LAC_localInputDir)
     print(productType, L2_LAC_localInputDir)
-    wgetCommand = "/usr/local/bin/wget -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N --wait=0.5 --random-wait --force-html -i -"
+# peter added "-c --timeout 20 -t 500" to test problems 2013-08-13; this sets multiple timeout types; default is one of the 3 types, 900-second (15 minute) read timeout.
+    wgetCommand = "wget --timeout 20 -t 500 -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N -c --timeout 20 -t 500 --wait=0.5 --random-wait --force-html -i -"
+#    wgetCommand = "wget --no-http-keep-alive --no-cookies -U 'Potato Browser 3.5' --timeout 20 -t 500 -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N --limit-rate 80000 --no-http-keep-alive --no-cookies -U 'Potato Browser 3.5' -c --timeout 20 -t 500 --wait=0.5 --random-wait --force-html -i -"
+#    wgetCommand = "wget -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N --wait=0.5 --random-wait --force-html -i -"
     print("Downloading ", productType, " products to ", getcwd(), ":")
     print(wgetCommand)
     system(wgetCommand)

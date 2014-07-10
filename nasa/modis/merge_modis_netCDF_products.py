@@ -8,23 +8,23 @@ from sys import argv, exit
 import time
 
 def printUsage():
-    print("Usage: merge_modis_netCDF_products.py back_day")
-    print("where back_day is an integer value specifying the start day to process:")
-    print("1 means yesterday, 2 means the day before yesterday, etc.")
-    print("Maximum value is 32767.\n")
+    print "Usage: merge_modis_netCDF_products.py back_day"
+    print "where back_day is an integer value specifying the start day to process:"
+    print "1 means yesterday, 2 means the day before yesterday, etc."
+    print "Maximum value is 32767.\n"
 
 argc=len(argv)
 if argc < 2:          # the program was called incorrectly
-    print("\nToo few parameters passed!")
+    print "\nToo few parameters passed!"
     printUsage()
     exit(1)
 
 try:
     backDay = int(argv[1])
 except TypeError:
-    print("back_day parameter must be of type integer!")
+    print "back_day parameter must be of type integer!"
     printUsage()
-    print("\nError in parameters. Now exiting...\n")
+    print "\nError in parameters. Now exiting...\n"
     exit(1)
 
 today = time.localtime()
@@ -46,9 +46,9 @@ def get_date_string(float_day):
         day   = "0" + str(date[2])
     return year + month + day
 
-print("\n****************************************************")
-print(" Script \'merge_modis_netCDF_products.py\' at work... ")
-print("****************************************************\n")
+print "\n****************************************************"
+print " Script \'merge_modis_netCDF_products.py\' at work... "
+print "****************************************************\n"
 
 #L3_MOD_AQU_CHLA_j__20120412_NSEA_PC_ACR___0000
 srcDir='/fs14/EOservices/OutputPool/MODIS/WAQS-MC/daily/'
@@ -71,8 +71,10 @@ _second= str(today[5]).zfill(2)
 
 arrival_day=get_date_string(get_float_day(backDay))
 myDate = arrival_day
+#print(myDate)
+#exit(1)
 #myDate =  _year + _month + _day
-#myDate = '20060605'
+#myDate = '20120927'
 
 src_list = listdir(srcDir)
 list_size = len(src_list)
@@ -83,9 +85,9 @@ for a in range(list_size):
             #print "Removing " + item + " from list."
             src_list.remove(item)
 
-print('\nsrc_list=', src_list)
+print '\nsrc_list=', src_list
 if not len(src_list):
-    print('Nothing to do. Now exiting...')
+    print 'Nothing to do. Now exiting...'
     exit(1)
 
 # dummy arrays
@@ -142,18 +144,18 @@ northSeaOutputData     = northSeaOutputproduct[:-2]+'ata'
 balticSeaOutputproduct = destDir + 'L3_MOD_AQU_' + myDate + '_BALTIC_PC_ACR___0000.dim'
 balticSeaOutputData    = balticSeaOutputproduct[:-2]+'ata'
 
-print("northSeaOutputproduct: "  + northSeaOutputproduct)
-print("balticSeaOutputproduct: " + balticSeaOutputproduct)
+print "northSeaOutputproduct: "  + northSeaOutputproduct
+print "balticSeaOutputproduct: " + balticSeaOutputproduct
 
 # zuerst die CHL12-Produkte als Zielprodukt fuer Bandarithmetik kopieren:
 
 northSeaDataDirectory   = northSeaList[0][0:len(northSeaList[0])-2] + "ata"
 northSeaCopyDataCommand = "cp -rf " + northSeaDataDirectory + " " + northSeaOutputData
-print(northSeaCopyDataCommand)
+print northSeaCopyDataCommand
 
 balticSeaDataDirectory   = balticSeaList[0][0:len(balticSeaList[0])-2] + "ata"
 balticSeaCopyDataCommand = "cp -rf " + balticSeaDataDirectory + " " + balticSeaOutputData
-print(balticSeaCopyDataCommand)
+print balticSeaCopyDataCommand
 
 system(northSeaCopyDataCommand)
 system(balticSeaCopyDataCommand)
@@ -164,7 +166,7 @@ system(balticSeaCopyDataCommand)
 
 northSeaSedCommand  = "sed -e \"s/_CHLA_j__/_/\" " + northSeaList[0] + " > "  + northSeaOutputproduct
 balticSeaSedCommand = "sed -e \"s/_CHLA_j__/_/\" " + balticSeaList[0] + " > " + balticSeaOutputproduct
-print("sed-commands:" + northSeaSedCommand + "  " + balticSeaSedCommand)
+print "sed-commands:" + northSeaSedCommand + "  " + balticSeaSedCommand
 system(northSeaSedCommand)
 system(balticSeaSedCommand)
 
@@ -174,10 +176,10 @@ system(balticSeaSedCommand)
 exit(1)
 
 bands = ['sea_suspended_matter', 'yellow_substance', 'transparency']
-print("\n") 
-print(northSeaList)
-print("\n") 
-print(balticSeaList)
+print "\n" 
+print northSeaList
+print "\n" 
+print balticSeaList
 
 # bandarith batch syntax:
 #<productName> [-d <destProductName>]<bandName> <expression> [<bandName> <expression>]
@@ -188,9 +190,9 @@ print(balticSeaList)
 for count in range(3):
     northSeaCommand  = bandArithTool + " " + northSeaList[count+1] + " -d "  + northSeaOutputproduct  + " " + bands[count] + " \"" + bands[count] + "\""
     balticSeaCommand = bandArithTool + " " + balticSeaList[count+1] + " -d " + balticSeaOutputproduct + " " + bands[count] + " \"" + bands[count] + "\""
-    print("\nExecuting: " + northSeaCommand)
+    print "\nExecuting: " + northSeaCommand
     system(northSeaCommand)
-    print("\nExecuting: " + balticSeaCommand)
+    print "\nExecuting: " + balticSeaCommand
     system(balticSeaCommand)
 
 # Jetzt kommt noch das patchTool, damit die Produkte in jedem Fall komplett sind
@@ -199,8 +201,8 @@ system(patchNorthSeaCommand)
 patchBalticSeaCommand = patchTool + " " + balticSeaOutputproduct
 system(patchBalticSeaCommand)
 
-print("\n***************************************************")
-print(" Script \'merge_modis_netCDF_products.py\' finished. ")
-print("***************************************************\n")
+print "\n***************************************************"
+print " Script \'merge_modis_netCDF_products.py\' finished. "
+print "***************************************************\n"
 
 #EOF

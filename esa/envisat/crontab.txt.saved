@@ -1,0 +1,38 @@
+# ------------- min (0 - 59)
+# | ----------- hour (0 - 23)
+# | | --------- day of month (1 - 31)
+# | | | ------- month (1 - 12)
+# | | | | ----- day of week (0 - 6) (Sunday=0)
+# | | | | |
+# * * * * * command to be executed
+
+0 0-23/3 * * *   /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'KS'    > /dev/null 2>&1
+0 2-23/3 * * *   /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'ES'    > /dev/null 2>&1
+0 1,4-23/3 * * * /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'DDS'   > /dev/null 2>&1
+30 0-23/3 * * *  /home/uwe/cronjobs/modules/get_meris_and_modis_netCDF_from_ACRI.py 'MERIS' > /dev/null 2>&1
+35 0-23/3 * * *  /home/uwe/cronjobs/modules/get_meris_and_modis_netCDF_from_ACRI.py 'MODIS' > /dev/null 2>&1
+45 0-23/8 * * *  /home/uwe/cronjobs/gather_aatsr_orbits.py                     > /dev/null 2>&1
+15 2 * * *       /home/uwe/cronjobs/put_old_products_to_attic.py               > /dev/null 2>&1; /home/uwe/cronjobs/modules/archive_attic_products.py > /dev/null 2>&1; cd /fs14/EOservices/Attic/MERIS/L3_netCDF/; gzip meris_*/*.nc > /dev/null 2>&1; cd /fs14/EOservices/Attic/MODIS/L3_netCDF/; gzip modis_*/*.nc > /dev/null 2>&1
+30 2 * * *       /home/uwe/cronjobs/zip_and_put_products_on_ftp_for_bsh.py     > /dev/null 2>&1
+45 2 * * *       /home/uwe/cronjobs/put_products_on_ftp_for_uniold.py          > /dev/null 2>&1
+00 3 * * *       /home/uwe/cronjobs/put_products_on_ftp_for_estonia.py         > /dev/null 2>&1
+45 3 * * *       /home/uwe/cronjobs/launch_weekly_IPF_L3_binning.py            > /dev/null 2>&1
+45 3 4 * *       /home/uwe/cronjobs/launch_MC_monthly_L3_processing.py         > /dev/null 2>&1
+30 4 * * *       /home/uwe/cronjobs/launch_aatsr_orbits_processing.py          > /dev/null 2>&1
+45 5 * * *       /home/uwe/cronjobs/launch_wew_L3_processing.py 1              > /dev/null 2>&1
+23 5 * * *       /home/uwe/cronjobs/launch_MC_merging_and_weekly_L3_binning.py                              > /dev/null 2>&1
+50 5 * * *       /home/uwe/cronjobs/launch_MC_daily_and_weekly_image_processing_and_web_site_creation.py  2 > /dev/null 2>&1 # tbd
+00 6 * * *       /home/uwe/cronjobs/launch_daily_wew_L3_mosaicking.py                                       > /dev/null 2>&1
+15 7 * * *       /home/uwe/cronjobs/launch_IPF_daily_RGB_image_creation.py 1                                > /dev/null 2>&1
+22 7 * * *       /home/uwe/cronjobs/launch_WeW_daily_RGB_image_creation.py 1                                > /dev/null 2>&1
+30 7 * * *       /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 1               > /dev/null 2>&1
+30 8 * * *       /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 2               > /dev/null 2>&1
+30 20 * * *      /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 2               > /dev/null 2>&1
+30 23 * * *      /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 3               > /dev/null 2>&1
+30 6 * * *       python /home/uwe/cronjobs/modules/apply_color_palettes_MC_WAQS_daily_corpi.py 2            > /dev/null 2>&1
+35 6 * * *       python /home/uwe/cronjobs/modules/apply_color_palettes_MC_WAQS_weekly_corpi.py 2           > /dev/null 2>&1
+40 6 * * *       python /home/uwe/cronjobs/modules/make_daily_merged_IPF_L1b_quicklooks.py BalticSea 2 > /dev/null 2>&1; python /home/uwe/cronjobs/modules/make_daily_merged_IPF_L1b_quicklooks.py BalticSea 1 > /dev/null 2>&1
+45 6 * * *       python /home/uwe/cronjobs/put_products_on_ftp_for_corpi.py                                 > /dev/null 2>&1
+50 6 * * *       python /home/uwe/cronjobs/put_products_on_ftp_for_su.py                                    > /dev/null 2>&1
+
+* * * * *   python /home/uwe/tools/miscellaneous/synchronise_webserver.py > /dev/null 2>&1

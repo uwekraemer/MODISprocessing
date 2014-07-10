@@ -1,0 +1,38 @@
+# ------------- min (0 - 59)
+# | ----------- hour (0 - 23)
+# | | --------- day of month (1 - 31)
+# | | | ------- month (1 - 12)
+# | | | | ----- day of week (0 - 6) (Sunday=0)
+# | | | | |
+# * * * * * command to be executed
+PATH=/home/uwe/tools/seadas/6.4/run/bin3/linux:/home/uwe/tools/seadas/6.4/run/scripts:/home/uwe/tools/seadas/6.4/run/bin/linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+PYTHONPATH=/home/uwe/tools/seadas/6.4/run/scripts:/home/uwe/tools/seadas/6.4/run/scripts/modules:/home/uwe/cronjobs
+SEADAS=/home/uwe/tools/seadas/6.4
+OCSSWROOT=/home/uwe/tools/seadas/6.4
+SDSTMP=/tmp
+SDS_USER_PATH=.
+SDSBIN=$SEADAS/run/bin
+L2GEN_ANC=/home/uwe/tools/seadas/6.4/run/var/anc
+MODIS_ATTEPH=/home/uwe/tools/seadas/6.4/run/var/modis/atteph
+AUTO_MET=ON
+AUTO_OZONE=ON
+AUTO_SST_MODIS=ON
+AUTO_SST_OTHER=ON
+AUTO_NO2=OFF
+AUTO_ICE=ON
+GEOCHECK_THRESHOLD=95
+#STARTNUDGE=0
+#STOPNUDGE=0
+
+50 1-23/3 * * * python /home/uwe/cronjobs/get_meris_and_modis_netCDF_from_ACRI.py 'MODIS'
+40 14 * * *     python /home/uwe/cronjobs/nasa/modis/launch_modis_MC_merging_and_weekly_L3_binning.py 3
+20 15 * * *     python /home/uwe/cronjobs/nasa/modis/launch_modis_MC_merging_and_weekly_L3_binning.py 2
+40 15 * * *     python /home/uwe/cronjobs/nasa/modis/apply_color_palettes_modis_MC_WAQS_weekly_corpi.py 2
+20 23 * * *     python /home/uwe/cronjobs/nasa/modis/apply_color_palettes_modis_MC_WAQS_weekly_L3_binning.py 1
+30  2 * * *     python /home/uwe/cronjobs/nasa/modis/put_modis_products_on_ftp_for_corpi.py
+45 15 * * *     python /home/uwe/cronjobs/launch_MC_daily_and_weekly_image_processing_and_web_site_creation.py  2  # tbd
+35  2 * * *     python /home/uwe/cronjobs/nasa/modis/zip_and_put_modis_products_on_ftp_for_bsh.py
+
+ 0  6 * * *     python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 2
+30 1-23/6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 1
+30 4-23/6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 0

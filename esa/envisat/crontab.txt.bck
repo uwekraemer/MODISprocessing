@@ -1,0 +1,36 @@
+# ------------- min (0 - 59)
+# | ----------- hour (0 - 23)
+# | | --------- day of month (1 - 31)
+# | | | ------- month (1 - 12)
+# | | | | ----- day of week (0 - 6) (Sunday=0)
+# | | | | |
+# * * * * * command to be executed
+
+0 0-23/3 * * *   /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'KS'  >> /home/uwe/logs/kiruna_processing.log
+0 2-23/3 * * *   /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'ES'  >> /home/uwe/logs/esrin_processing.log
+0 1,4-23/3 * * * /home/uwe/cronjobs/gather_and_process_meris_orbits.py 'DDS' >> /home/uwe/logs/dds_processing.log
+30 0-23/3 * * *  /home/uwe/cronjobs/modules/get_netCDF_fromACRI.py           >> /home/uwe/logs/get_netCDF_fromACRI.log
+45 0-23/8 * * *  /home/uwe/cronjobs/gather_aatsr_orbits.py                   >> /home/uwe/logs/gather_aatsr_orbits.log
+45 1 * * *       /home/uwe/cronjobs/modules/try_to_get_NZ.py                 >> /home/uwe/logs/try_to_get_NZ.log
+15 2 * * *       /home/uwe/cronjobs/put_old_products_to_attic.py             >> /home/uwe/logs/put_old_products_to_attic.log; /home/uwe/cronjobs/modules/archive_attic_products.py >> /home/uwe/logs/archive_attic_products.log
+30 2 * * *       /home/uwe/cronjobs/put_products_on_ftp_for_bsh.py           >> /home/uwe/logs/put_products_on_ftp_for_bsh.log
+45 2 * * *       /home/uwe/cronjobs/put_products_on_ftp_for_uniold.py        >> /home/uwe/logs/put_products_on_ftp_for_uniold.log
+00 3 * * *       /home/uwe/cronjobs/put_products_on_ftp_for_estonia.py       >> /home/uwe/logs/put_products_on_ftp_for_estonia.log
+45 3 * * *       /home/uwe/cronjobs/launch_weekly_IPF_L3_binning.py          >> /home/uwe/logs/launch_weekly_IPF_L3_binning.log
+45 3 4 * *       /home/uwe/cronjobs/launch_MC_monthly_L3_processing.py       >> /home/uwe/logs/launch_MC_monthly_L3_processing.log
+45 4 8 * *       /home/uwe/cronjobs/launch_MC_monthly_animations_processing.py >> /home/uwe/logs/launch_MC_monthly_animations_processing.log
+30 4 * * *       /home/uwe/cronjobs/launch_aatsr_orbits_processing.py        >> /home/uwe/logs/launch_aatsr_orbits_processing.log
+45 5 * * *       /home/uwe/cronjobs/launch_wew_L3_processing.py 1            >> /home/uwe/logs/launch_wew_L3_processing.log
+45 5 * * *       /home/uwe/cronjobs/launch_IPF_daily_and_weekly_image_processing_and_web_site_creation.py 1 >> /home/uwe/logs/launch_IPF_daily_and_weekly_image_processing_and_web_site_creation.log
+23 5 * * *       /home/uwe/cronjobs/launch_MC_merging_and_weekly_L3_binning.py                              >> /home/uwe/logs/launch_MC_merging_and_weekly_L3_binning.log
+50 5 * * *       /home/uwe/cronjobs/launch_MC_daily_and_weekly_image_processing_and_web_site_creation.py  2 >> /home/uwe/logs/launch_MC_daily_and_weekly_image_processing_and_web_site_creation.log
+00 6 * * *       /home/uwe/cronjobs/launch_daily_wew_L3_mosaicking_noflags.py                               >> /home/uwe/logs/launch_daily_wew_L3_mosaicking_noflags.log
+33 7 * * *       /home/uwe/cronjobs/launch_MC_daily_and_weekly_overview_images_assembly.py                  >> /home/uwe/logs/launch_MC_daily_and_weekly_overview_images_assembly.log
+15 7 * * *       /home/uwe/cronjobs/launch_IPF_daily_RGB_image_creation.py 1                                >> /home/uwe/logs/launch_IPF_daily_RGB_image_creation.log
+22 7 * * *       /home/uwe/cronjobs/launch_WeW_daily_RGB_image_creation.py 1                                >> /home/uwe/logs/launch_WeW_daily_RGB_image_creation.log
+30 7 * * *       /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 1               >> /home/uwe/logs/launch_world_mosaic_processing_and_web_site_creation.log
+30 8 * * *       /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 2               >> /home/uwe/logs/launch_world_mosaic_processing_and_web_site_creation.log
+30 20 * * *      /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 2               >> /home/uwe/logs/launch_world_mosaic_processing_and_web_site_creation.log
+30 23 * * *      /home/uwe/cronjobs/launch_world_mosaic_processing_and_web_site_creation.py 3               >> /home/uwe/logs/launch_world_mosaic_processing_and_web_site_creation.log
+
+22 2 * * *       /home/uwe/cronjobs/backup_home_dir.py >> /home/uwe/logs/backup_home_dir.log

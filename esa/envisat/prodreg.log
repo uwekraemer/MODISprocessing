@@ -1,0 +1,18 @@
+Mar 23, 2012 9:32:53 AM com.bc.merci.productreg.ProductRegistrationRunner registerProducts
+INFO: Registering product '/fs14/EOservices/InputPool/MERIS/RR/DDSdownload/MER_RR__1PNPDK20120307_134833_000026073112_00240_52409_5337.N1 ...
+Mar 23, 2012 9:32:53 AM com.bc.merci.productreg.ProductRegistrator loadProductGuarded
+INFO: Reading Product '/fs14/EOservices/InputPool/MERIS/RR/DDSdownload/MER_RR__1PNPDK20120307_134833_000026073112_00240_52409_5337.N1 ...
+Mar 23, 2012 9:32:54 AM com.bc.merci.productreg.ProductRegistrator loadProductGuarded
+INFO: ... success: Product read
+Mar 23, 2012 9:32:54 AM com.bc.merci.productreg.util.ProductRegistratorUtil moveFile
+INFO: moving /fs14/EOservices/InputPool/MERIS/RR/DDSdownload/MER_RR__1PNPDK20120307_134833_000026073112_00240_52409_5337.N1 to /fs14/EOservices/Repositories/MERIS/RR/DDSrepository/2012/03
+Mar 23, 2012 9:33:58 AM com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: Generating quicklook ...
+Mar 23, 2012 9:34:18 AM com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: ... success: Quicklook generated at 2012/03/ql/MER_RR__1PNPDK20120307_134833_000026073112_00240_52409_5337.png
+Mar 23, 2012 9:34:18 AM com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: Generating thumbnail ...
+Mar 23, 2012 9:34:22 AM com.bc.merci.productreg.quicklook.QuicklookGenerator createQuickLookAndThumbnail
+INFO: ... success: Thumbnail generated at 2012/03/tn/MER_RR__1PNPDK20120307_134833_000026073112_00240_52409_5337.png
+Mar 23, 2012 9:34:22 AM com.bc.merci.productreg.ProductRegistrationRunner registerProducts
+INFO: ... success: Product registered

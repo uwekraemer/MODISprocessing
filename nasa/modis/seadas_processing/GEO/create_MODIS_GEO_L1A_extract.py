@@ -3,7 +3,8 @@ __author__ = 'uwe'
 from sys import argv, exit
 from os.path import exists
 from os import listdir, makedirs, remove, system
-from nasa.modis.seadas_processing.shared.utilities import getDOY, ensureTrailingSlash, exit_on_empty_list, bzip2CompressFile, bzip2DecompressFile
+
+from utils.utilities import getDOY, ensureTrailingSlash, exit_on_empty_list, bzip2CompressFile, bzip2DecompressFile
 from nasa.modis.seadas_processing.conf.paths import modisL1A_LACBasePath, modisGEOBasePath, modisL1A_subBasePath, modisGEO_subBasePath, seadasScriptsDir
 from nasa.modis.seadas_processing.conf.params import west_lon_nsea_bsea as west_lon, east_lon_nsea_bsea as east_lon, south_lat_nsea_bsea as south_lat, north_lat_nsea_bsea as north_lat
 
@@ -25,9 +26,6 @@ _month = _date[4:6]
 _day   = _date[6:]
 _doy   = getDOY(_year, _month, _day)
 
-unzipped_extension = '.L1A_LAC.x.hdf'
-zipped_extension = unzipped_extension + '.bz2'
-
 print(_year, _month, _day, _doy)
 
 modisL1A_LACPath = ensureTrailingSlash(ensureTrailingSlash(ensureTrailingSlash(modisL1A_LACBasePath + _year) + _month) + _day)
@@ -40,9 +38,14 @@ for _path in [modisL1A_subPath, modisGEOPath, modisGEO_subPath]:
         print("Making directory: ", _path, " ...")
         makedirs(_path)
 
-srcList = listdir(modisL1A_LACPath)
-listSize = len(srcList)
-print(listSize)
+try:
+    srcList = listdir(modisL1A_LACPath)
+except OSError:
+    print("Cannot open ", modisL1A_LACPath+ "! Now exiting...")
+    exit(1)
+else:
+    listSize = len(srcList)
+    print(listSize)
 
 if not listSize:
     print("Nothing to do. Now exiting...")
@@ -52,10 +55,10 @@ if not listSize:
 for a in range(listSize):
     for item in srcList:
         _remove = False
-        if not item.startswith('A' + _year +str(_doy)) or not item.find(unzipped_extension):
+        if not item.startswith('A' + _year +str(_doy)) or not item.find('.L1A_LAC'):
             _remove=True
 
-        if item.endswith(unzipped_extension) or item.endswith(zipped_extension):
+        if item.endswith('L1A_LAC') or item.endswith('L1A_LAC.bz2'):
             _remove = False
         else:
             _remove=True
@@ -88,12 +91,12 @@ def process_modisL1A_extract(l1a_productPath):
     GEO_sub_productPath = l1a_productPath.replace('L1A_LAC', 'GEO_sub')
     L1A_sub_productpath = l1a_productPath.replace('L1A_LAC', 'L1A_sub')
     processing_call = modisL1AextractScript + ' ' + l1a_productPath + ' -g ' + GEO_productPath + \
-                      ' -w ' + str(west_lon) + \
-                      ' -s ' + str(south_lat) + \
-                      ' -e ' + str(east_lon) + \
-                      ' -n ' + str(north_lat) + \
                       ' -o ' + L1A_sub_productpath + \
-                      ' --extract_geo='+GEO_sub_productPath
+                      ' -n ' + str(north_lat) + \
+                      ' -s ' + str(south_lat) + \
+                      ' -w ' + str(west_lon) + \
+                      ' -e ' + str(east_lon) + \
+                      ' --extract_geo=' + GEO_sub_productPath
 
     print("Executing: ", processing_call)
     system(processing_call)
@@ -114,14 +117,14 @@ for item in srcList:
     print('\n', item)
     zipped  = False
     _process = _process_GEO = False
-    if item.endswith(unzipped_extension):
+    if item.endswith('L1A_LAC'):
         zipped = False
         l1a_product = item
-    elif item.endswith(zipped_extension):
+    elif item.endswith('L1A_LAC.bz2'):
         zipped = True
         l1a_product = item[:-4]
     acq_time = item[8:15]
-    if acq_time > '050000' and acq_time < '220000':
+    if acq_time > '050000' and acq_time < '160000':
         _process = True
     if _process:
         GEO_file = modisGEOPath + l1a_product.replace('L1A_LAC', 'GEO')
@@ -144,8 +147,8 @@ for item in srcList:
                 print(_geo_success)
             _l1a_sub_success = process_modisL1A_extract(l1a_productPath=unzipped_item)
             print(_l1a_sub_success)
-#            _bzip2_success = bzip2CompressFile(unzipped_item, True)
-#            print _bzip2_success, "Done."
+            _bzip2_success = bzip2CompressFile(unzipped_item, True)
+            print(_bzip2_success, "Done.")
         else:
             zipped_item = modisL1A_LACPath + item
             _bunzip_success = bzip2DecompressFile(zipped_item, False)
@@ -164,5 +167,3 @@ for item in srcList:
                 continue
     else:
         print("Night product. Skipping...")
-
-

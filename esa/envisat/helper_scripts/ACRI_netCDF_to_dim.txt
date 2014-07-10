@@ -1,0 +1,4 @@
+ pconvertCommand = pconvertTool + " -f dim -o " + dimapDestDir + " " + ncd_file + " &"
+
+# sourcedir: Für jeden Parameter entsprechenden Pfad und Parameter im Namen angeben.,
+/home/uwe/tools/beam-3.5/bin/pconvert.sh -f dim -o '/fs14/EOservices/OutputPool/MERIS/RR/WAQS-MC/daily/' /fs14/EOservices/InputPool/MERIS/L3_netCDF/meris_chl12/L3_ENV_MER_CHL12_j__20110715_NSEA_PC_ACR___0000.nc

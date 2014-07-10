@@ -3,55 +3,37 @@ __author__ = 'uwe'
 from sys import argv, exit
 from os.path import exists
 from os import chdir, getcwd, makedirs, system
-from datetime import date, timedelta
+
+from utils.utilities import getDOY
+
 
 def printUsage():
-    print('Usage: get_MODIS_LAC.py satellite backDay')
-    print('where satellite is one out of [AQUA, TERRA], and')
-    print('where backDay is a integer number specifying the number of days ')
-    print('before today. This script will download the data for that particular day.')
+    print("Usage: ", argv[0], "<date>")
+    print("where date is a string representing the date to process,")
+    print("e.g. 20120607 for June 7, 2012.")
 
-
-argc = len(argv)
-if argc < 3:
+if len(argv) != 2:
     printUsage()
     exit(1)
 
-satellite_name = argv[1]
-if satellite_name not in ['AQUA', 'TERRA']:
-    print("satellite unsupported.")
+back_date = argv[1]
+if len(back_date)!=8:
+    print("****************************")
+    print("* date parameter malformed *")
+    print("****************************")
     printUsage()
     exit(1)
 
-satellite_code = satellite_name[:1]
+_year  = back_date[:4]
+_month = back_date[4:6]
+_day   = back_date[6:]
+_doy   = getDOY(_year, _month, _day)
+print("Processing date " + back_date + " (DOY = " + str(_doy)+ ").")
 
-try:
-    backDay = int(argv[2])
-except TypeError:
-    print("backDay parameter must be of integer type.")
-    printUsage()
-    exit(1)
+satellite_code = 'A'
 
-
-
-def getDOY(backDay):
-    d0 = date(_year-1, 12, 31)
-    d1 = date.today() - timedelta(backDay)
-    delta=d1-d0
-    return delta.days
-
-def getBackDate(backDay):
-    _back_date = date.today() - timedelta(backDay)
-    return _back_date
-
-_back_date = getBackDate(backDay)
-_year  = _back_date.year
-_month = _back_date.month
-_day   = _back_date.day
-DOY = getDOY(backDay)
-
-print(_year, _month, _day, DOY)
-#exit(1)
+print(_year, _month, _day, _doy)
+# exit(1)
 
 def ensureTrailingSlash(path):
     if not path.endswith('/'):
@@ -60,13 +42,13 @@ def ensureTrailingSlash(path):
         return path
 
 
-MODIS_products = ['L1A_LAC', 'L2_LAC_OC', 'L2_LAC_SST']
+MODIS_products = ['L1A_LAC']
 MODIS_localBaseDir = '/fs14/EOservices/InputPool/MODIS' + ensureTrailingSlash(satellite_code)
 baseURL = 'http://oceandata.sci.gsfc.nasa.gov/MODIS'+ ensureTrailingSlash(satellite_code)
 
 
 for productType in MODIS_products:
-    destURL = baseURL + ensureTrailingSlash(productType[:2]) + ensureTrailingSlash(str(_year)) + ensureTrailingSlash(str(DOY))
+    destURL = baseURL + ensureTrailingSlash(productType[:2]) + ensureTrailingSlash(str(_year)) + ensureTrailingSlash(str(_doy).zfill(3))
     L2_LAC_localInputDir = MODIS_localBaseDir + ensureTrailingSlash(productType) \
                            + ensureTrailingSlash(str(_year)) \
                            + ensureTrailingSlash(str(_month).zfill(2)) \
@@ -75,10 +57,10 @@ for productType in MODIS_products:
         makedirs(L2_LAC_localInputDir)
     chdir(L2_LAC_localInputDir)
     print(productType, L2_LAC_localInputDir)
-    wgetCommand = "wget -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N --wait=0.5 --random-wait --force-html -i -"
+    wgetCommand = "wget --timeout 20 -t 500 -nc -S -O - " + destURL + " |grep "+ productType + ".bz2|wget -N -c --timeout 20 -t 500 --wait=0.5 --random-wait --force-html -i -"
     print("Downloading ", productType, " products to ", getcwd(), ":")
     print(wgetCommand)
-    #system(wgetCommand)
+    system(wgetCommand)
 
 
 # wget -nc -S -O - http://oceandata.sci.gsfc.nasa.gov/MODISA/L2/2012/131/ |grep OC|wget -N --wait=0.5 --random-wait --force-html -i -

@@ -1,0 +1,25 @@
+# ------------- min (0 - 59)
+# | ----------- hour (0 - 23)
+# | | --------- day of month (1 - 31)
+# | | | ------- month (1 - 12)
+# | | | | ----- day of week (0 - 6) (Sunday=0)
+# | | | | |
+# * * * * * command to be executed
+50 1-23/3 * * * python /home/uwe/cronjobs/get_meris_and_modis_netCDF_from_ACRI.py 'MODIS'
+40 14 * * *     python /home/uwe/cronjobs/nasa/modis/launch_modis_MC_merging_and_weekly_L3_binning.py 3
+20 15 * * *     python /home/uwe/cronjobs/nasa/modis/launch_modis_MC_merging_and_weekly_L3_binning.py 2
+40 15 * * *     python /home/uwe/cronjobs/nasa/modis/apply_color_palettes_modis_MC_WAQS_weekly_corpi.py 2
+20 23 * * *     python /home/uwe/cronjobs/nasa/modis/apply_color_palettes_modis_MC_WAQS_weekly_L3_binning.py 1
+30  2 * * *     python /home/uwe/cronjobs/nasa/modis/put_modis_products_on_ftp_for_corpi.py
+45 15 * * *     python /home/uwe/cronjobs/launch_MC_daily_and_weekly_image_processing_and_web_site_creation.py  2  # tbd
+35  2 * * *     python /home/uwe/cronjobs/nasa/modis/zip_and_put_modis_products_on_ftp_for_bsh.py
+
+# 0      6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 2 2>&1 >> logs/get_MODIS_LAC_2.py
+#30 1-23/6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 1 2>&1 >> logs/get_MODIS_LAC_1.py
+#30 4-23/6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 0 2>&1 >> logs/get_MODIS_LAC_0.py
+# temporary to prevent duplicate downloads, until scripts are fixed
+ 0      6 * * * python /home/uwe/cronjobs/nasa/modis/get_MODIS_LAC.py AQUA 1 2>&1 >> logs/get_MODIS_LAC_1.log
+
+10     10 * * * /bin/bash -c "export PYTHONPATH=/home/uwe/cronjobs; source /home/uwe/tools/seadas/6.4/config/seadas.env; python /home/uwe/cronjobs/nasa/modis/seadas_processing/control/modis_end_to_end_processing.py 2" 2>&1 >> logs/modis_end_to_end_processing.log
+
+ 0     18 * * * python /home/uwe/cronjobs/nasa/modis/forward_MODIS_LAC_to_calvalus.py AQUA 2 2>&1 >> logs/forward_MODIS_LAC_to_calvalus.log
