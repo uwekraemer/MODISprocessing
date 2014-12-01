@@ -1,0 +1,51 @@
+<graph id="demarine_coarse_grid_projection_nc_writer">
+  <version>1.0</version>
+  <node id="demarine_coarse_grid_projection">
+    <operator>Reproject</operator>
+    <sources>
+      <source>${source}</source>
+    </sources>
+    <parameters>
+        <wktFile/>
+        <crs>GEOGCS["WGS84(DD)", 
+          DATUM["WGS84", 
+            SPHEROID["WGS84", 6378137.0, 298.257223563]], 
+          PRIMEM["Greenwich", 0.0], 
+          UNIT["degree", 0.017453292519943295], 
+          AXIS["Geodetic longitude", EAST], 
+          AXIS["Geodetic latitude", NORTH]]</crs>
+        <resampling>Bilinear</resampling>
+        <referencePixelX>0.5</referencePixelX>
+        <referencePixelY>0.5</referencePixelY>
+        <easting>-4.0416666666666</easting>
+        <northing>65.875</northing>
+        <orientation>0.0</orientation>
+        <pixelSizeX>0.083333333333</pixelSizeX>
+        <pixelSizeY>0.05</pixelSizeY>
+        <width>414</width>
+        <height>347</height>
+        <tileSizeX/>
+        <tileSizeY/>
+        <orthorectify>false</orthorectify>
+        <elevationModelName/>
+        <noDataValue>NaN</noDataValue>
+        <includeTiePointGrids>true</includeTiePointGrids>
+        <addDeltaBands>false</addDeltaBands>
+    </parameters>
+<!--
+  </node>
+    <node id="WNC">
+    <operator>Write</operator>
+    <sources>
+      <source>demarine_coarse_grid_projection</source>
+    </sources>
+    <parameters>
+      <file>${file}</file>
+      <formatName>NetCDF-CF</formatName>
+      <deleteOutputOnFailure>false</deleteOutputOnFailure>
+      <writeEntireTileRows>true</writeEntireTileRows>
+      <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
+    </parameters>
+  </node>
+  -->
+</graph>

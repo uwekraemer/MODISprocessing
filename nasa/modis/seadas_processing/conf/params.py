@@ -1,7 +1,7 @@
 __author__ = 'uwe'
 
-#_processing = 'STD'
-_processing = 'NASA'
+_processing = 'STD'
+# _processing = 'NASA'
 
 _site = 'NorthSeaBalticSea'
 #_site = 'NorthSea'
@@ -11,9 +11,9 @@ _site = 'NorthSeaBalticSea'
 #           -w -15.0000 -s 47.0000 -e 15.0000 -n 64.0000
 
 west_lon_nsea_bsea  = -15.00
-east_lon_nsea_bsea  =  15.00
+east_lon_nsea_bsea  =  32.00
 south_lat_nsea_bsea =  47.00
-north_lat_nsea_bsea =  64.00
+north_lat_nsea_bsea =  66.00
 
 # L2 processing parameters
 l2gen_const_params = ''
@@ -111,13 +111,13 @@ l2gen_const_params += 'giop_bbp_s= 1.03373\n'
 
 # L3 processing parameters
 west_lon_large_nsea_l3  = -15.0
-east_lon_large_nsea_l3  =  15.0
+east_lon_large_nsea_l3  =  32.0
 south_lat_large_nsea_l3 =  47.0
-north_lat_large_nsea_l3 =  64.0
+north_lat_large_nsea_l3 =  66.0
 
 west_lon_large_bsea_l3  =  7.0
 east_lon_large_bsea_l3  = 32.0
 south_lat_large_bsea_l3 = 53.0
 north_lat_large_bsea_l3 = 65.0
 
-l3_grid_cell_size = 2.0
+l3_grid_cell_size = 1.2
